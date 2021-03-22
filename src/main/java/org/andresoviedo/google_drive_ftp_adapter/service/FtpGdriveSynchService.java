@@ -73,11 +73,12 @@ public final class FtpGdriveSynchService {
             @Override
             public void run() {
                 try {
-                    // check google drive changes
-                    checkForRemoteChanges();
-
                     // sync pending folders
                     syncPendingFolders();
+                    
+                    // check google drive changes
+                    checkForRemoteChanges();
+                    
                 } catch (Exception e) {
                     LOG.error(e.getMessage(), e);
                     try {
@@ -114,9 +115,10 @@ public final class FtpGdriveSynchService {
                         revision = change.getRevision();
                     }
 
-                    // update revision to start next time there
+                    // update revision to start next time there and stops the service
                     cache.updateRevision(revision);
                     LOG.info("New revision: " + revision);
+                    stop();
                 }
 
                 LOG.debug("No remote changes...");
