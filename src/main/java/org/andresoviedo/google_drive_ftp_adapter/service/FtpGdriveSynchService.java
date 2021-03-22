@@ -114,9 +114,11 @@ public final class FtpGdriveSynchService {
                         revision = change.getRevision();
                     }
 
-                    // update revision to start next time there
+                    // update revision to start next time there and stops the sych service
+                    //note: without stopping the service, it keeps running forever, creating traffic with drive.changes.list
                     cache.updateRevision(revision);
                     LOG.info("New revision: " + revision);
+                    stop();
                 }
 
                 LOG.debug("No remote changes...");
